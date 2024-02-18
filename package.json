@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "dotenv": "^16.4.4",
+    "openai": "^4.28.0"
+  }
+}

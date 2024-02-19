@@ -12,7 +12,7 @@ const getResponse = async () => {
         messages: [
             {
                 role: 'user',
-                content: 'Format my day into a schedual: 1. Math, 4hrs, 2. language arts, 2 hrs. I eat 3 meals a day, i go to bed a 9pm and get up at 7am. Give a binary file',
+                content: 'Format my day into a schedual: 1. Math, 4hrs, 2. language arts, 2 hrs. I eat 3 meals a day, i go to bed a 9pm and get up at 7am.',
             },
         ],
         temperature: 0,

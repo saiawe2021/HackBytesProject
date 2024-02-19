@@ -1,3 +1,10 @@
+// const OpenAI = require('openai');
+
+// const openai = new OpenAI({
+//     apiKey:"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",
+// });
+
+
 const calendar = document.querySelector(".calendar"),
   date = document.querySelector(".date"),
   daysContainer = document.querySelector(".days"),
@@ -32,6 +39,7 @@ const months = [
 
 //set a empty array
 let eventsArr = [];
+let eventNames = [];
 
 getEvents();
 // Function to add days
@@ -221,29 +229,29 @@ addEventTitle.addEventListener("input", (e)=> {
 });
 // time format in from and to time
 
-addEventFrom.addEventListener("input", (e)=>{
-  addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "");
-  // if two numbers enters auto add :
-  if(addEventFrom.value.length == 2) {
-    addEventFrom.value += ":";
-  }
-  // dont let user enter more than 5 charecters
-  if(addEventFrom.value.length > 5) {
-    addEventFrom.value = addEventFrom.value.slice(0, 5);
-  }
-});
+// addEventFrom.addEventListener("input", (e)=>{
+//   addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "");
+//   // if two numbers enters auto add :
+//   if(addEventFrom.value.length == 2) {
+//     addEventFrom.value += ":";
+//   }
+//   // dont let user enter more than 5 charecters
+//   if(addEventFrom.value.length > 5) {
+//     addEventFrom.value = addEventFrom.value.slice(0, 5);
+//   }
+// });
 
-addEventTo.addEventListener("input", (e)=>{
-  addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "");
-  // if two numbers enters auto add :
-  if(addEventTo.value.length == 2) {
-    addEventTo.value += ":";
-  }
-  // dont let user enter more than 5 charecters
-  if(addEventTo.value.length > 5) {
-    addEventTo.value = addEventTo.value.slice(0, 5);
-  }
-});
+// addEventTo.addEventListener("input", (e)=>{
+//   addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "");
+//   // if two numbers enters auto add :
+//   if(addEventTo.value.length == 2) {
+//     addEventTo.value += ":";
+//   }
+//   // dont let user enter more than 5 charecters
+//   if(addEventTo.value.length > 5) {
+//     addEventTo.value = addEventTo.value.slice(0, 5);
+//   }
+// });
 
 // function to add listner on days after rendered
 
@@ -353,37 +361,37 @@ function updateEvents(date) {
 // function to add events 
 addEventSubmit.addEventListener("click", ()=> {
   const eventTitle = addEventTitle.value;
-  const eventTimeFrom = addEventFrom.value;
-  const eventTimeTo =  addEventTo.value;
+  eventNames.push(eventTitle);
+  // const eventTimeFrom = addEventFrom.value;
+  // const eventTimeTo =  addEventTo.value;
 
   // some validations
-  if(eventTitle == "" || eventTimeFrom == "" || eventTimeTo == "") {
+  if(eventTitle == "") {
     alert("Please fill all the fields");
     return ;
   }
 
-  const timeFromArr = eventTimeFrom.split(":");
-  const timeToArr = eventTimeTo.split(":");
+  // const timeFromArr = eventTimeFrom.split(":");
+  // const timeToArr = eventTimeTo.split(":");
 
-  if (
-    timeFromArr.length !== 2 ||
-    timeToArr.length !== 2 ||
-    timeFromArr[0] > 23 ||
-    timeFromArr[1] > 59 ||
-    timeToArr[0] > 23 ||
-    timeToArr[1] > 59
-  ) {
-    alert("Invalid Time Format");
-    return;
-  }
+  // if (
+  //   timeFromArr.length !== 2 ||
+  //   timeToArr.length !== 2 ||
+  //   timeFromArr[0] > 23 ||
+  //   timeFromArr[1] > 59 ||
+  //   timeToArr[0] > 23 ||
+  //   timeToArr[1] > 59
+  // ) {
+  //   alert("Invalid Time Format");
+  //   return;
+  // }
 
 
-  const timeFrom = converTime(eventTimeFrom);
-  const timeTo = converTime(eventTimeTo);
+  // const timeFrom = converTime(eventTimeFrom);
+  // const timeTo = converTime(eventTimeTo);
 
   const newEvent = {
     title: eventTitle,
-    time : timeFrom + " - " + timeTo,
   };
 
   let eventAddded = false;
@@ -397,7 +405,7 @@ addEventSubmit.addEventListener("click", ()=> {
         item.month == month+1 &&
         item.year == year
       ) {
-        item.events.push(newEvent);
+        item.events.push(newEvent); 
         eventAddded = true;
       }
     })
@@ -418,8 +426,6 @@ addEventSubmit.addEventListener("click", ()=> {
 
   //clear the fields;
   addEventTitle.value = "";
-  addEventFrom.value = "";
-  addEventTo.value = "";
 
   // show current added event
 
@@ -492,3 +498,22 @@ function getEvents() {
   }
   eventsArr.push(...JSON.parse(localStorage.getItem("events")));
 }
+
+
+// async function APIorder() {
+//     const response = await openai.chat.completions.create ({
+//         model: 'gpt-3.5-turbo',
+//         messages: [
+//             {
+//                 role: 'user',
+//                 content: 'Format my day into a schedual with times in a array format: ${eventNames} ',
+//             },
+//         ],
+//         temperature: 0,
+//         max_tokens: 500,
+//         top_p: 1.0,
+//         frequency_penalty: 0.0,
+//         presence_penalty: 0.0,
+//     });
+//     console.log(response.choices[0].message);
+// }

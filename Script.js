@@ -1,8 +1,9 @@
-// const OpenAI = require('openai');
 
-// const openai = new OpenAI({
-//     apiKey:"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",
-// });
+const OpenAI = require('openai');
+
+ const openai = new OpenAI({
+     apiKey:"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",
+ });
 
 
 const calendar = document.querySelector(".calendar"),
@@ -12,7 +13,7 @@ const calendar = document.querySelector(".calendar"),
   next = document.querySelector(".next"),
   todayBtn = document.querySelector(".today-btn"),
   gotoBtn = document.querySelector(".goto-btn"),
-  dateInput = document.querySelector(".date-input");
+  dateInput = document.querySelector(".date-input"),
   eventday = document.querySelector(".event-day"),
   eventDate = document.querySelector(".event-date"),
   eventsContainer = document.querySelector(".events "),

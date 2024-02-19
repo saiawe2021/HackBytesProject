@@ -2209,7 +2209,7 @@ process.umask = function() { return 0; };
 const OpenAI = require('openai');
 
  const openai = new OpenAI({
-     apiKey:"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",dangerouslyAllowBrowser: true
+     apiKey:"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", dangerouslyAllowBrowser: true
  });
 
 
@@ -2716,23 +2716,23 @@ function getEvents() {
 }
 
 
-// async function APIorder() {
-//     const response = await openai.chat.completions.create ({
-//         model: 'gpt-3.5-turbo',
-//         messages: [
-//             {
-//                 role: 'user',
-//                 content: 'Format my day into a schedual with times in a array format: ${eventNames} ',
-//             },
-//         ],
-//         temperature: 0,
-//         max_tokens: 500,
-//         top_p: 1.0,
-//         frequency_penalty: 0.0,
-//         presence_penalty: 0.0,
-//     });
-//     console.log(response.choices[0].message);
-// }
+async function APIorder() {
+    const response = await openai.chat.completions.create ({
+        model: 'gpt-3.5-turbo',
+        messages: [
+            {
+                role: 'user',
+                content: 'Format my day into a schedual with times in a array format: ${eventNames} ',
+            },
+        ],
+        temperature: 0,
+        max_tokens: 500,
+        top_p: 1.0,
+        frequency_penalty: 0.0,
+        presence_penalty: 0.0,
+    });
+    console.log(response.choices[0].message);
+}
 },{"openai":13}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });

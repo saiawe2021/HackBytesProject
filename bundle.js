@@ -404,6 +404,7 @@ addEventSubmit.addEventListener("click", ()=> {
 
   const newEvent = {
     title: eventTitle,
+    time: "Undecided"
   };
 
   let eventAddded = false;
@@ -478,6 +479,7 @@ eventsContainer.addEventListener("click", (e) => {
         event.events.forEach((item, index) => {
           if (item.title === eventTitle) {
             event.events.splice(index, 1);
+            eventNames.splice(index, 1);
           }
         });
 
@@ -522,7 +524,7 @@ else {
 }
 let content;
  async function APIorder() {
-      const input = "Format my day into a schedual with times as an array in JSON format with the following activities:" + eventNames + "and " + surveyAnswer;
+      const input = `Format my day into a schedual with times as an array in JSON format with the following activities: ${eventNames} `;
       console.log(input);
      const response = await openai.chat.completions.create ({
          model: 'gpt-3.5-turbo',
@@ -538,12 +540,30 @@ let content;
          frequency_penalty: 0.0,
          presence_penalty: 0.0,
      });
-     content = JSON.parse(response.choices[0].message.content);
+     
+     
+     content = JSON.parse(response.choices[0].message.content)["schedule"];
 
      console.log(content);
-     console.log(content["schedule"]);
      console.log(typeof content);
+     gptSchedule(content);
  }
+  function gptSchedule(content) {
+    eventsArr.forEach((obj) => {
+      if (obj.day == activeDay && obj.month == month + 1 && obj.year == year)
+      {
+        obj.events = [];
+        content.forEach((activity) => {
+          const newEvent = {
+            title: activity.activity,
+            time: activity.time
+          }
+          obj.events.push(newEvent);
+        })
+        updateEvents(activeDay);
+      }
+    })
+  }
 const testGpt = document.querySelector('#test-gpt');
 testGpt.addEventListener('click', () => { 
   APIorder()

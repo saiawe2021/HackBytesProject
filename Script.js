@@ -478,6 +478,7 @@ eventsContainer.addEventListener("click", (e) => {
         event.events.forEach((item, index) => {
           if (item.title === eventTitle) {
             event.events.splice(index, 1);
+            eventNames.splice(index, 1);
           }
         });
 

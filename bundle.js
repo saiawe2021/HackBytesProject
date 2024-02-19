@@ -1,12 +1,11 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+const OpenAI = require("openai");
+require("dotenv").config();
 
-const OpenAI = require('openai');
-require('dotenv').config();
-
- const openai = new OpenAI({
-     apiKey:"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", dangerouslyAllowBrowser: true
- });
-
+const openai = new OpenAI({
+  apiKey: "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",
+  dangerouslyAllowBrowser: true,
+});
 
 const calendar = document.querySelector(".calendar"),
   date = document.querySelector(".date"),
@@ -71,19 +70,18 @@ function initCalendar() {
   // cuurent month days
 
   for (let i = 1; i <= lastDate; i++) {
-
     // check if event present on current day
     let event = false;
     eventsArr.forEach((eventObj) => {
       if (
         eventObj.day == i &&
-        eventObj.month == month+1 &&
+        eventObj.month == month + 1 &&
         eventObj.year == year
       ) {
         // if event fount
         event = true;
       }
-    })
+    });
 
     //if day is today add class today
     if (
@@ -91,7 +89,6 @@ function initCalendar() {
       year == new Date().getFullYear() &&
       month == new Date().getMonth()
     ) {
-
       activeDay = i;
       getActiveDay(i);
       updateEvents(i);
@@ -112,10 +109,9 @@ function initCalendar() {
   }
 
   // next month days
-  for(let j = 1; j<nextDays; j++) {
+  for (let j = 1; j < nextDays; j++) {
     days += `<div class="day next-date">${j} </div>`;
   }
-
 
   daysContainer.innerHTML = days;
   // add listner after callendar initialized
@@ -123,12 +119,11 @@ function initCalendar() {
 }
 initCalendar();
 
-
 // prev month
 
 function prevMonth() {
   month--;
-  if(month<0) {
+  if (month < 0) {
     month = 11;
     year--;
   }
@@ -140,7 +135,7 @@ function prevMonth() {
 
 function nextMonth() {
   month++;
-  if(month>11) {
+  if (month > 11) {
     month = 0;
     year++;
   }
@@ -149,31 +144,29 @@ function nextMonth() {
 
 // add event listener on prev and next
 
-prev.addEventListener("click", prevMonth)
-next.addEventListener("click",nextMonth)
-
+prev.addEventListener("click", prevMonth);
+next.addEventListener("click", nextMonth);
 
 // our calendar is ready
 // lets add goto date and goto today functionality
-
 
 todayBtn.addEventListener("click", () => {
   today = new Date();
   month = today.getMonth();
   year = today.getFullYear();
   initCalendar();
-})
+});
 
 dateInput.addEventListener("input", (e) => {
   // allow only numbers remove anyting else
   dateInput.value = dateInput.value.replace(/[^0-9/]/g, "");
-  if(dateInput.value.length == 2) {
+  if (dateInput.value.length == 2) {
     //add a slash if two numbers entered
     dateInput.value += "/";
   }
-  if(dateInput.value.length > 7) {
+  if (dateInput.value.length > 7) {
     // dont allow more than 7 characters
-    dateInput.value = dateInput.value.slice(0,7);
+    dateInput.value = dateInput.value.slice(0, 7);
   }
 
   // if backspace pressed
@@ -183,7 +176,6 @@ dateInput.addEventListener("input", (e) => {
     }
   }
 });
-
 
 gotoBtn.addEventListener("click", gotoDate);
 
@@ -204,14 +196,12 @@ function gotoDate() {
 }
 
 const addEventBtn = document.querySelector(".add-event"),
- addEventContainer = document.querySelector(".add-event-wrapper"),
- addEventCloseBtn = document.querySelector(".close"),
- addEventTitle = document.querySelector(".event-name"),
- addEventFrom = document.querySelector(".event-time-from"),
- addEventTo = document.querySelector(".event-time-to")
+  addEventContainer = document.querySelector(".add-event-wrapper"),
+  addEventCloseBtn = document.querySelector(".close"),
+  addEventTitle = document.querySelector(".event-name"),
+  addEventFrom = document.querySelector(".event-time-from"),
+  addEventTo = document.querySelector(".event-time-to");
 
-
- 
 addEventBtn.addEventListener("click", () => {
   addEventContainer.classList.toggle("active");
 });
@@ -227,16 +217,16 @@ document.addEventListener("click", (e) => {
 });
 
 //open survey
-const surveyBtn = document.querySelector('.open-survey'),
-  surveyContainer = document.querySelector('.survey-wrapper')
+const surveyBtn = document.querySelector(".open-survey"),
+  surveyContainer = document.querySelector(".survey-wrapper");
 
-  surveyBtn.addEventListener("click", () => {
-    surveyContainer.classList.toggle("active");
-  })
+surveyBtn.addEventListener("click", () => {
+  surveyContainer.classList.toggle("active");
+});
 
 // allow only 50 chars in title
-addEventTitle.addEventListener("input", (e)=> {
-  addEventTitle.value = addEventTitle.value.slice(0,50);
+addEventTitle.addEventListener("input", (e) => {
+  addEventTitle.value = addEventTitle.value.slice(0, 50);
 });
 // time format in from and to time
 
@@ -266,7 +256,7 @@ addEventTitle.addEventListener("input", (e)=> {
 
 // function to add listner on days after rendered
 
-function addListner () {
+function addListner() {
   const days = document.querySelectorAll(".day");
   days.forEach((day) => {
     day.addEventListener("click", (e) => {
@@ -275,55 +265,57 @@ function addListner () {
 
       // call active daay after click
       getActiveDay(e.target.innerHTML);
-      updateEvents(Number(e.target.innerHTML) );
+      updateEvents(Number(e.target.innerHTML));
 
       // removbe active from already active day
       days.forEach((day) => {
-          day.classList.remove("active");
+        day.classList.remove("active");
       });
 
       // if  prev month day clicked goto prev month adn add active
-      if(e.target.classList.contains("prev-date")) {
+      if (e.target.classList.contains("prev-date")) {
         prevMonth();
         setTimeout(() => {
           // select all days of that month
           const days = document.querySelector(".day");
 
-          // after going to prev month add active to clicked 
+          // after going to prev month add active to clicked
           days.forEach((day) => {
-            if(!day.classList.contains("prev-date") && day.innerHTML == e.target.innerHTML) {
+            if (
+              !day.classList.contains("prev-date") &&
+              day.innerHTML == e.target.innerHTML
+            ) {
               day.classList.add("activate");
             }
-          })
+          });
         }, 100);
         // same with next month days
-      } else if(e.target.classList.contains("next-date")) {
+      } else if (e.target.classList.contains("next-date")) {
         nextMonth();
         setTimeout(() => {
           // select all days of that month
           const days = document.querySelector(".day");
 
-          // after going to prev month add active to clicked 
+          // after going to prev month add active to clicked
           days.forEach((day) => {
-            if(!day.classList.contains("next-date") && day.innerHTML == e.target.innerHTML) {
+            if (
+              !day.classList.contains("next-date") &&
+              day.innerHTML == e.target.innerHTML
+            ) {
               day.classList.add("activate");
             }
-          })
+          });
         }, 100);
-      }
-      else {
+      } else {
         // remaining current month days
-        e.target.classList.add("active")
+        e.target.classList.add("active");
       }
-    })
+    });
   });
 }
 
-
-
 // lets show active day events and date at top
 
-  
 function getActiveDay(date) {
   const day = new Date(year, month, date);
   const dayName = day.toString().split(" ")[0];
@@ -331,20 +323,15 @@ function getActiveDay(date) {
   eventDate.innerHTML = date + " " + months[month] + " " + year;
 }
 
-
 // function to show events for that day
 
 function updateEvents(date) {
   let events = "";
-  eventsArr.forEach((event) =>  {
+  eventsArr.forEach((event) => {
     // got events of active day only
-    if (
-      date == event.day &&
-      month+1 == event.month &&
-      year == event.year
-    ) {
+    if (date == event.day && month + 1 == event.month && year == event.year) {
       // then show event on document
-      event.events.forEach((event)  =>{
+      event.events.forEach((event) => {
         events += `<div class="event">
             <div class="title">
               <i class="fas fa-circle"></i>
@@ -369,8 +356,8 @@ function updateEvents(date) {
   saveEvents();
 }
 
-// function to add events 
-addEventSubmit.addEventListener("click", ()=> {
+// function to add events
+addEventSubmit.addEventListener("click", () => {
   const eventTitle = addEventTitle.value;
   eventNames.push(eventTitle);
   console.log(eventNames);
@@ -378,9 +365,9 @@ addEventSubmit.addEventListener("click", ()=> {
   // const eventTimeTo =  addEventTo.value;
 
   // some validations
-  if(eventTitle == "") {
+  if (eventTitle == "") {
     alert("Please fill all the fields");
-    return ;
+    return;
   }
 
   // const timeFromArr = eventTimeFrom.split(":");
@@ -398,36 +385,35 @@ addEventSubmit.addEventListener("click", ()=> {
   //   return;
   // }
 
-
   // const timeFrom = converTime(eventTimeFrom);
   // const timeTo = converTime(eventTimeTo);
 
   const newEvent = {
     title: eventTitle,
-    time: "Undecided"
+    time: "Undecided",
   };
 
   let eventAddded = false;
 
   // check if events are not empty
-  if(eventsArr.length > 0) {
+  if (eventsArr.length > 0) {
     // cehck if current day hasalready any event then add to that
-    eventsArr.forEach((item) =>  {
-      if(
+    eventsArr.forEach((item) => {
+      if (
         item.day == activeDay &&
-        item.month == month+1 &&
+        item.month == month + 1 &&
         item.year == year
       ) {
-        item.events.push(newEvent); 
+        item.events.push(newEvent);
 
         eventAddded = true;
       }
-    })
+    });
   }
 
   //if event array empty or current day has not event create new
-  if(!eventAddded) {
-    eventsArr.push ({
+  if (!eventAddded) {
+    eventsArr.push({
       day: activeDay,
       month: month + 1,
       year: year,
@@ -435,7 +421,7 @@ addEventSubmit.addEventListener("click", ()=> {
     });
   }
 
-  // removes active from add event form 
+  // removes active from add event form
   addEventContainer.classList.remove("active");
 
   //clear the fields;
@@ -445,15 +431,15 @@ addEventSubmit.addEventListener("click", ()=> {
 
   updateEvents(activeDay);
 
-  // also add event class to newly added day if not already 
+  // also add event class to newly added day if not already
 
   const activeDayElem = document.querySelector(".day.active");
-  if(!activeDayElem.classList.contains("event")) {
-    activeDayElem.classList.add("event")
+  if (!activeDayElem.classList.contains("event")) {
+    activeDayElem.classList.add("event");
   }
 });
 
-function converTime(time){
+function converTime(time) {
   let timeArr = time.split(":");
   let timeHour = timeArr[0];
   let timeMin = timeArr[1];
@@ -463,11 +449,10 @@ function converTime(time){
   return time;
 }
 
-
-// function to remove events on click 
+// function to remove events on click
 
 eventsContainer.addEventListener("click", (e) => {
-  if(e.target.classList.contains("event")) {
+  if (e.target.classList.contains("event")) {
     const eventTitle = e.target.children[0].children[1].innerHTML;
 
     eventsArr.forEach((event) => {
@@ -484,13 +469,13 @@ eventsContainer.addEventListener("click", (e) => {
         });
 
         // if no events remaing on that remove complete day
-        if(event.events.length == 0) {
-          eventsArr.splice(eventsArr.indexOf(event),1);
+        if (event.events.length == 0) {
+          eventsArr.splice(eventsArr.indexOf(event), 1);
           //after remove complete day also remove active class of that day
 
           const activeDayElem = document.querySelector(".day.active");
-          if(activeDayElem.classList.contains("event")) {
-            activeDayElem.classList.remove("event")
+          if (activeDayElem.classList.contains("event")) {
+            activeDayElem.classList.remove("event");
           }
         }
       }
@@ -503,7 +488,7 @@ eventsContainer.addEventListener("click", (e) => {
 //state events in local storage get from there
 
 function saveEvents() {
-  localStorage.setItem["events", JSON.stringify(eventsArr)];
+  localStorage.setItem[("events", JSON.stringify(eventsArr))];
 }
 
 function getEvents() {
@@ -514,109 +499,108 @@ function getEvents() {
   eventsArr.push(...JSON.parse(localStorage.getItem("events")));
 }
 
-const surveyAnswer = document.querySelector(".improvements");
-const submitButton = document.querySelector('.submit-button');
-if(surveyAnswer == null) {
-  localStorage.setItem('surveryanswer', null)
-}
-else {
-  localStorage.setItem('surveyanswer', "some feed back is " + surveyAnswer.value);
+const surveyAnswer = document.querySelector(".survey-input");
+const surveySubmit = document.querySelector(".survey-submit");
+if (surveyAnswer == null) {
+  localStorage.setItem("surveryanswer", null);
+} else {
+  localStorage.setItem(
+    "surveyanswer",
+    "some feed back is " + surveyAnswer.value
+  );
 }
 
-let content;
- async function APIorder() {
-      const names = getNames();
-      console.log("names: "+ names);
-      const input = `Format my day into a schedual with times as an array in JSON format with the following activities: ${names} `;
-      console.log(input);
-     const response = await openai.chat.completions.create ({
-         model: 'gpt-3.5-turbo',
-         messages: [
-             {
-                 role: 'user',
-                 content: input,
-             },
-         ],
-         temperature: 0,
-         max_tokens: 500,
-         top_p: 1.0,
-         frequency_penalty: 0.0,
-         presence_penalty: 0.0,
-     });
-     
-     
-     content = JSON.parse(response.choices[0].message.content)["schedule"];
+let surveryresponse;
+async function APIorder() {
+  const names = getNames();
+  console.log("names: " + names);
+  const input = `Format my day into a schedual with times as an array in JSON format with the following activities: ${names} `;
+  console.log(input);
+  const response = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [
+      {
+        role: "user",
+        content: input,
+      },
+    ],
+    temperature: 0,
+    max_tokens: 500,
+    top_p: 1.0,
+    frequency_penalty: 0.0,
+    presence_penalty: 0.0,
+  });
 
-     console.log(content);
-     console.log(typeof content);
-     gptSchedule(content);
- }
- function getNames() {
+  surveryresponse = JSON.parse(response.choices[0].message.content)["schedule"];
+
+  console.log(surveryresponse);
+  console.log(typeof surveryresponse);
+  gptSchedule(surveryresponse);
+}
+function getNames() {
   let rval;
   eventsArr.forEach((obj) => {
-    if (obj.day == activeDay && obj.month == month + 1 && obj.year == year)
-      {
-        console.log("obj: " + obj);
-        
-        rval = obj.events.map(event => event.title);
-        console.log("rval:" + rval);
-        
-      }
-  })
+    if (obj.day == activeDay && obj.month == month + 1 && obj.year == year) {
+      console.log("obj: " + obj);
+
+      rval = obj.events.map((event) => event.title);
+      console.log("rval:" + rval);
+    }
+  });
   return rval;
-  
 }
-  function gptSchedule(content) {
-    eventsArr.forEach((obj) => {
-      if (obj.day == activeDay && obj.month == month + 1 && obj.year == year)
-      {
-        obj.events = [];
-        content.forEach((activity) => {
-          const newEvent = {
-            title: activity.activity,
-            time: activity.time
-          }
-          obj.events.push(newEvent);
-        })
-        updateEvents(obj.day);
-      }
-    })
-  }
-const testGpt = document.querySelector('#test-gpt');
-testGpt.addEventListener('click', () => { 
-  APIorder()
+function gptSchedule(content) {
+  eventsArr.forEach((obj) => {
+    if (obj.day == activeDay && obj.month == month + 1 && obj.year == year) {
+      obj.events = [];
+      content.forEach((activity) => {
+        const newEvent = {
+          title: activity.activity,
+          time: activity.time,
+        };
+        obj.events.push(newEvent);
+      });
+      updateEvents(obj.day);
+    }
+  });
+}
+const testGpt = document.querySelector("#test-gpt");
+testGpt.addEventListener("click", () => {
+  APIorder();
+});
+
+async function SurveyOrder() {
+  const input = "Change this schedule" + surveryresponse + "based on this feedback" +surveyAnswer.value + "in JSON format" ;
+  console.log(input);
+ const response = await openai.chat.completions.create ({
+     model: 'gpt-3.5-turbo',
+     messages: [
+         {
+             role: 'user',
+             content: input,
+         },
+     ],
+     temperature: 0,
+     max_tokens: 500,
+     top_p: 1.0,
+     frequency_penalty: 0.0,
+     presence_penalty: 0.0,
+ });
+
+ const content = JSON.parse(response.choices[0].message.content);
+
+ console.log(content);
+ console.log(content["schedule"]);
+ console.log(typeof content);
+ gptSchedule(content);
+}
+
+surveySubmit.addEventListener("click", ()=> {
+  SurveyOrder();
 })
 
 
-// async function SurveyOrder() {
-//   const input = "Change this schedule" + content + "based on this feedback" +surveyAnswer.value ;
-//   console.log(input);
-//  const response = await openai.chat.completions.create ({
-//      model: 'gpt-3.5-turbo',
-//      messages: [
-//          {
-//              role: 'user',
-//              content: input,
-//          },
-//      ],
-//      temperature: 0,
-//      max_tokens: 500,
-//      top_p: 1.0,
-//      frequency_penalty: 0.0,
-//      presence_penalty: 0.0,
-//  });
- 
- 
-//  const content = JSON.parse(response.choices[0].message.content);
 
-//  console.log(content);
-//  console.log(content["schedule"]);
-//  console.log(typeof content);
-// }
-
-// submitButton.addEventListener("click", () => {
-//   SurveyOrder();
-// })
 },{"dotenv":84,"openai":148}],2:[function(require,module,exports){
 'use strict';
 

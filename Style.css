@@ -366,7 +366,31 @@
     text-decoration: none;
     color: #f5f5f5;
   }
-  
+  .survey-wrapper {
+    position:absolute;
+    bottom: 100px;
+    left: 50%;
+    width: 90%;
+    max-height: 0;
+    overflow:hidden;
+    border-radius: 5px;
+    background-color: #fff;
+    transform: translateX(-50%);
+    transition: max-height 0.3s ease;
+  }
+  .survey-wrapper.active {
+    max-height: 300px;
+  }
+  .survey-header {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    color: #373c4f;
+    border-bottom: 1px solid #f5f5f5;
+  }
   .add-event-wrapper {
     position: absolute;
     bottom: 100px;
@@ -454,6 +478,19 @@
     padding:20px;
   }
 
+  .survey-submit{
+    height:40px;
+    font-size:1rem;
+    font-weight: 500;
+    outline: none;
+    border: none;
+    color: #fff;
+    background-color: var(--primary-clr);
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid var(--primary-clr);
+  }
   .add-event-btn{
     height:40px;
     font-size:1rem;

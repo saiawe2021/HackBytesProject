@@ -403,6 +403,7 @@ addEventSubmit.addEventListener("click", ()=> {
 
   const newEvent = {
     title: eventTitle,
+    time: "Undecided"
   };
 
   let eventAddded = false;
@@ -510,8 +511,9 @@ function getEvents() {
   eventsArr.push(...JSON.parse(localStorage.getItem("events")));
 }
 
-
+  let content;
  async function APIorder() {
+  
       const input = `Format my day into a schedual with times as an array in JSON format with the following activities: ${eventNames} `;
       console.log(input);
      const response = await openai.chat.completions.create ({
@@ -529,13 +531,29 @@ function getEvents() {
          presence_penalty: 0.0,
      });
      
-     
-     const content = JSON.parse(response.choices[0].message.content);
+     console.log(response.choices[0].message.content);
+     content = JSON.parse(response.choices[0].message.content)["schedule"];
 
      console.log(content);
-     console.log(content["schedule"]);
      console.log(typeof content);
+     gptSchedule(content);
  }
+  function gptSchedule(content) {
+    eventsArr.forEach((obj) => {
+      if (obj.day == activeDay && obj.month == month + 1 && obj.year == year)
+      {
+        obj.events = [];
+        content.forEach((activity) => {
+          const newEvent = {
+            title: activity.activity,
+            time: activity.time
+          }
+          obj.events.push(newEvent);
+        })
+        updateEvents(activeDay);
+      }
+    })
+  }
 const testGpt = document.querySelector('#test-gpt');
 testGpt.addEventListener('click', () => {
   APIorder()

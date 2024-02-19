@@ -216,13 +216,15 @@ document.addEventListener("click", (e) => {
   }
 });
 
-//open survey
+//open and close survey
 const surveyBtn = document.querySelector(".open-survey"),
   surveyContainer = document.querySelector(".survey-wrapper");
 
 surveyBtn.addEventListener("click", () => {
   surveyContainer.classList.toggle("active");
 });
+
+
 
 // allow only 50 chars in title
 addEventTitle.addEventListener("input", (e) => {
@@ -501,8 +503,8 @@ function getEvents() {
 
 const surveyAnswer = document.querySelector(".survey-input");
 const surveySubmit = document.querySelector(".survey-submit");
-if (surveyAnswer == null) {
-  localStorage.setItem("surveryanswer", null);
+if (!surveyAnswer.value) {
+  localStorage.setItem("surveryanswer", "");
 } else {
   localStorage.setItem(
     "surveyanswer",
@@ -510,11 +512,20 @@ if (surveyAnswer == null) {
   );
 }
 
+
 let surveryresponse;
 async function APIorder() {
   const names = getNames();
+  let INPUT;
+  if(surveyAnswer.value) {
+    INPUT = "Format my day into a schedual with times as an array in JSON format with the following activities: " + names + " with this feedback " + surveyAnswer.value +"dont duplicate items";
+  }
+  else{
+    INPUT = "Format my day into a schedual with times as an array in JSON format with the following activities: " + names + "dont duplicate items";
+  }
   console.log("names: " + names);
-  const input = `Format my day into a schedual with times as an array in JSON format with the following activities: ${names} `;
+  console.log(surveyAnswer.value == null);
+  const input = INPUT;
   console.log(input);
   const response = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
@@ -569,34 +580,35 @@ testGpt.addEventListener("click", () => {
   APIorder();
 });
 
-async function SurveyOrder() {
-  const input = "Change this schedule" + surveryresponse + "based on this feedback" +surveyAnswer.value + "in JSON format" ;
-  console.log(input);
- const response = await openai.chat.completions.create ({
-     model: 'gpt-3.5-turbo',
-     messages: [
-         {
-             role: 'user',
-             content: input,
-         },
-     ],
-     temperature: 0,
-     max_tokens: 500,
-     top_p: 1.0,
-     frequency_penalty: 0.0,
-     presence_penalty: 0.0,
- });
+// async function SurveyOrder() {
+//   const input = "Change this schedule " + surveryresponse + " based on this feedback " +surveyAnswer.value + " in JSON format" ;
+//   console.log(input);
+//  const response = await openai.chat.completions.create ({
+//      model: 'gpt-3.5-turbo',
+//      messages: [
+//          {
+//              role: 'user',
+//              content: input,
+//          },
+//      ],
+//      temperature: 0,
+//      max_tokens: 500,
+//      top_p: 1.0,
+//      frequency_penalty: 0.0,
+//      presence_penalty: 0.0,
+//  });
 
- const content = JSON.parse(response.choices[0].message.content);
+//  const content = JSON.parse(response.choices[0].message.content);
 
- console.log(content);
- console.log(content["schedule"]);
- console.log(typeof content);
- gptSchedule(content);
-}
+//  console.log(content);
+//  console.log(content["schedule"]);
+//  console.log(typeof content);
+//  gptSchedule(content);
+// }
 
 surveySubmit.addEventListener("click", ()=> {
-  SurveyOrder();
+  surveyContainer.classList.remove("active");
+  APIorder()
 })
 
 

@@ -1,8 +1,9 @@
 
 const OpenAI = require('openai');
+require('dotenv').config();
 
  const openai = new OpenAI({
-     apiKey:"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",
+     apiKey: "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", dangerouslyAllowBrowser: true
  });
 
 
@@ -228,9 +229,9 @@ document.addEventListener("click", (e) => {
 const surveyBtn = document.querySelector('.open-survey'),
   surveyContainer = document.querySelector('.survey-wrapper')
 
-surveyBtn.addEventListener("click", () => {
-  surveyContainer.classList.toggle("active");
-})
+  surveyBtn.addEventListener("click", () => {
+    surveyContainer.classList.toggle("active");
+  })
 
 // allow only 50 chars in title
 addEventTitle.addEventListener("input", (e)=> {
@@ -509,20 +510,24 @@ function getEvents() {
 }
 
 
-// async function APIorder() {
-//     const response = await openai.chat.completions.create ({
-//         model: 'gpt-3.5-turbo',
-//         messages: [
-//             {
-//                 role: 'user',
-//                 content: 'Format my day into a schedual with times in a array format: ${eventNames} ',
-//             },
-//         ],
-//         temperature: 0,
-//         max_tokens: 500,
-//         top_p: 1.0,
-//         frequency_penalty: 0.0,
-//         presence_penalty: 0.0,
-//     });
-//     console.log(response.choices[0].message);
-// }
+ async function APIorder() {
+     const response = await openai.chat.completions.create ({
+         model: 'gpt-3.5-turbo',
+         messages: [
+             {
+                 role: 'user',
+                 content: 'Format my day into a schedual with times in a array format: ${eventNames} ',
+             },
+         ],
+         temperature: 0,
+         max_tokens: 500,
+         top_p: 1.0,
+         frequency_penalty: 0.0,
+         presence_penalty: 0.0,
+     });
+     console.log(response.choices[0].message);
+ }
+const testGpt = document.querySelector('#test-gpt');
+testGpt.addEventListener('click', () => {
+  APIorder()
+})

@@ -522,9 +522,12 @@ if(surveyAnswer == null) {
 else {
   localStorage.setItem('surveyanswer', "some feed back is " + surveyAnswer.value);
 }
+
 let content;
  async function APIorder() {
-      const input = `Format my day into a schedual with times as an array in JSON format with the following activities: ${eventNames} `;
+      const names = getNames();
+      console.log("names: "+ names);
+      const input = `Format my day into a schedual with times as an array in JSON format with the following activities: ${names} `;
       console.log(input);
      const response = await openai.chat.completions.create ({
          model: 'gpt-3.5-turbo',
@@ -548,6 +551,21 @@ let content;
      console.log(typeof content);
      gptSchedule(content);
  }
+ function getNames() {
+  let rval;
+  eventsArr.forEach((obj) => {
+    if (obj.day == activeDay && obj.month == month + 1 && obj.year == year)
+      {
+        console.log("obj: " + obj);
+        
+        rval = obj.events.map(event => event.title);
+        console.log("rval:" + rval);
+        
+      }
+  })
+  return rval;
+  
+}
   function gptSchedule(content) {
     eventsArr.forEach((obj) => {
       if (obj.day == activeDay && obj.month == month + 1 && obj.year == year)
@@ -560,7 +578,7 @@ let content;
           }
           obj.events.push(newEvent);
         })
-        updateEvents(activeDay);
+        updateEvents(obj.day);
       }
     })
   }

@@ -1,0 +1,106 @@
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+#Home:hover {
+    transform:scale(1.2);
+}
+main {
+    align-items: center;
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+ body{
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    
+    background: linear-gradient(to bottom, #e2e1dc, #e2e1dc);
+
+}
+html {
+    background: linear-gradient(to bottom, #90E0EF, #90E0EF);;
+}
+
+
+
+
+
+/* Survey page styles */
+body {
+    font-family: 'Arial', sans-serif;
+
+}
+
+.container {
+    max-width: 80%;
+    margin: 0 auto;
+    background-color: #373c4f;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(9, 8, 94, 0.1);
+    border-radius: 5px;
+    margin-top:10px;
+    margin-bottom:20px;
+}
+
+h1 {
+    color: #fffafa;
+}
+
+p {
+    color: #ffff;
+}
+
+.question {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    color: #ffff;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    background-color: #ffff;
+    border-color: #b38add;
+
+}
+
+.radio-group {
+    display:flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+button {
+    background-color: #b38add;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #a979da;
+    
+}
+
+#efficiencyRank {
+    background-color: #b38add;
+}

@@ -559,7 +559,7 @@ let content;
           }
           obj.events.push(newEvent);
         })
-        updateEvents(activeDay);
+        updateEvents(obj.day);
       }
     })
   }

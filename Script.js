@@ -215,6 +215,14 @@ document.addEventListener("click", (e) => {
   }
 });
 
+//open survey
+const surveyBtn = document.querySelector('.open-survey'),
+  surveyContainer = document.querySelector('.survey-wrapper')
+
+surveyBtn.addEventListener("click", () => {
+  surveyContainer.classList.toggle("active");
+})
+
 // allow only 50 chars in title
 addEventTitle.addEventListener("input", (e)=> {
   addEventTitle.value = addEventTitle.value.slice(0,50);

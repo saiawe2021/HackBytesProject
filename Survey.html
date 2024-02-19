@@ -1,0 +1,61 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Survey</title>
+    <link rel="stylesheet" type="text/css" href="Survey.css"> 
+</head>
+<body>  
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Meaningful Survey</title>
+        <link rel="stylesheet" type="text/css" href="survey.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Survey</h1>
+            <p>Your feedback is valuable to us. Please take a moment to complete our survey.</p>
+                <div class = "question">
+                    <label>3. What other aspects should be added to organize your data?</label>
+                    <textarea id = "aspects" name="aspects.comments" rows="4"> </textarea>
+                </div>
+                <div class="question">
+                    <label>4. How satisfied are you with our products/services?</label>
+                    <div class="radio-group">
+                        <input type="radio" id="satisfied" name="data.satisfaction" value="satisfied" required>
+                        <label for="satisfied">Satisfied</label>
+    
+                        <input type="radio" id="neutral" name="data.satisfaction" value="neutral">
+                        <label for="neutral">Neutral</label>
+    
+                        <input type="radio" id="unsatisfied" name="data.satisfaction" value="unsatisfied">
+                        <label for="unsatisfied">Unsatisfied</label>
+                    </div>
+                </div>
+                <div class = "question">
+                    <label for="efficiencyRank">Rank the efficiency of the schedule:</label>
+                    <select id="efficiencyRank" required>
+                        <option value="" disabled selected>Select a rank</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="question">
+                    <label for="comments">6.. Any additional comments or suggestions?</label>
+                    <textarea id="comments" name="data.comments" rows="4"></textarea>
+                </div>
+                <div class="submit-button">
+                    <button type="submit" href ="Index.html">Submit</button>
+                </div>
+        </div>
+    </body>
+    
+</html>

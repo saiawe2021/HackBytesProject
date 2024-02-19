@@ -24071,6 +24071,571 @@ if (typeof Object.create === 'function') {
         }
       })
     }
+<<<<<<< HEAD
+=======
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],5:[function(require,module,exports){
+
+const OpenAI = require('openai');
+
+ const openai = new OpenAI({
+     apiKey:"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", dangerouslyAllowBrowser: true
+ });
+
+
+const calendar = document.querySelector(".calendar"),
+  date = document.querySelector(".date"),
+  daysContainer = document.querySelector(".days"),
+  prev = document.querySelector(".prev"),
+  next = document.querySelector(".next"),
+  todayBtn = document.querySelector(".today-btn"),
+  gotoBtn = document.querySelector(".goto-btn"),
+  dateInput = document.querySelector(".date-input"),
+  eventday = document.querySelector(".event-day"),
+  eventDate = document.querySelector(".event-date"),
+  eventsContainer = document.querySelector(".events "),
+  addEventSubmit = document.querySelector(".add-event-btn ");
+let today = new Date();
+let activeDay;
+let month = today.getMonth();
+let year = today.getFullYear();
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+//set a empty array
+let eventsArr = [];
+let eventNames = [];
+
+getEvents();
+// Function to add days
+
+function initCalendar() {
+  // to get prev month days an current month all days and rem next month days
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const prevLastDay = new Date(year, month, 0);
+  const prevDays = prevLastDay.getDate();
+  const lastDate = lastDay.getDate();
+  const day = firstDay.getDay();
+  const nextDays = 7 - lastDay.getDay() - 1;
+
+  //Update date on the top of the callendar
+  date.innerHTML = months[month] + " " + year;
+
+  //Adding days on dom
+  let days = "";
+
+  //prev months
+  for (let x = day; x > 0; x--) {
+    days += `<div class="day prev-date">${prevDays - x + 1}</div>`;
+  }
+
+  // cuurent month days
+
+  for (let i = 1; i <= lastDate; i++) {
+
+    // check if event present on current day
+    let event = false;
+    eventsArr.forEach((eventObj) => {
+      if (
+        eventObj.day == i &&
+        eventObj.month == month+1 &&
+        eventObj.year == year
+      ) {
+        // if event fount
+        event = true;
+      }
+    })
+
+    //if day is today add class today
+    if (
+      i == new Date().getDate() &&
+      year == new Date().getFullYear() &&
+      month == new Date().getMonth()
+    ) {
+
+      activeDay = i;
+      getActiveDay(i);
+      updateEvents(i);
+      //if event foutn also add event class
+      // add active on today at startup
+      if (event) {
+        days += `<div class="day today active event">${i}</div>`;
+      } else {
+        days += `<div class="day today active">${i}</div>`;
+      }
+    } else {
+      if (event) {
+        days += `<div class="day event">${i}</div>`;
+      } else {
+        days += `<div class="day ">${i}</div>`;
+      }
+    }
+  }
+
+  // next month days
+  for(let j = 1; j<nextDays; j++) {
+    days += `<div class="day next-date">${j} </div>`;
+  }
+
+
+  daysContainer.innerHTML = days;
+  // add listner after callendar initialized
+  addListner();
+}
+initCalendar();
+
+
+// prev month
+
+function prevMonth() {
+  month--;
+  if(month<0) {
+    month = 11;
+    year--;
+  }
+
+  initCalendar();
+}
+
+//next month
+
+function nextMonth() {
+  month++;
+  if(month>11) {
+    month = 0;
+    year++;
+  }
+  initCalendar();
+}
+
+// add event listener on prev and next
+
+prev.addEventListener("click", prevMonth)
+next.addEventListener("click",nextMonth)
+
+
+// our calendar is ready
+// lets add goto date and goto today functionality
+
+
+todayBtn.addEventListener("click", () => {
+  today = new Date();
+  month = today.getMonth();
+  year = today.getFullYear();
+  initCalendar();
+})
+
+dateInput.addEventListener("input", (e) => {
+  // allow only numbers remove anyting else
+  dateInput.value = dateInput.value.replace(/[^0-9/]/g, "");
+  if(dateInput.value.length == 2) {
+    //add a slash if two numbers entered
+    dateInput.value += "/";
+  }
+  if(dateInput.value.length > 7) {
+    // dont allow more than 7 characters
+    dateInput.value = dateInput.value.slice(0,7);
+  }
+
+  // if backspace pressed
+  if (e.inputType === "deleteContentBackward") {
+    if (dateInput.value.length === 3) {
+      dateInput.value = dateInput.value.slice(0, 2);
+    }
+  }
+});
+
+
+gotoBtn.addEventListener("click", gotoDate);
+
+// function to go to entered date
+function gotoDate() {
+  console.log("here");
+  const dateArr = dateInput.value.split("/");
+  // data validation
+  if (dateArr.length === 2) {
+    if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
+      month = dateArr[0] - 1;
+      year = dateArr[1];
+      initCalendar();
+      return;
+    }
+  }
+  alert("Invalid Date");
+}
+
+const addEventBtn = document.querySelector(".add-event"),
+ addEventContainer = document.querySelector(".add-event-wrapper"),
+ addEventCloseBtn = document.querySelector(".close"),
+ addEventTitle = document.querySelector(".event-name"),
+ addEventFrom = document.querySelector(".event-time-from"),
+ addEventTo = document.querySelector(".event-time-to")
+
+
+ 
+addEventBtn.addEventListener("click", () => {
+  addEventContainer.classList.toggle("active");
+});
+
+addEventCloseBtn.addEventListener("click", () => {
+  addEventContainer.classList.remove("active");
+});
+
+document.addEventListener("click", (e) => {
+  if (e.target !== addEventBtn && !addEventContainer.contains(e.target)) {
+    addEventContainer.classList.remove("active");
+  }
+});
+
+//open survey
+const surveyBtn = document.querySelector('.open-survey'),
+  surveyContainer = document.querySelector('.survey-wrapper')
+
+surveyBtn.addEventListener("click", () => {
+  surveyContainer.classList.toggle("active");
+})
+
+// allow only 50 chars in title
+addEventTitle.addEventListener("input", (e)=> {
+  addEventTitle.value = addEventTitle.value.slice(0,50);
+});
+// time format in from and to time
+
+// addEventFrom.addEventListener("input", (e)=>{
+//   addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "");
+//   // if two numbers enters auto add :
+//   if(addEventFrom.value.length == 2) {
+//     addEventFrom.value += ":";
+//   }
+//   // dont let user enter more than 5 charecters
+//   if(addEventFrom.value.length > 5) {
+//     addEventFrom.value = addEventFrom.value.slice(0, 5);
+//   }
+// });
+
+// addEventTo.addEventListener("input", (e)=>{
+//   addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "");
+//   // if two numbers enters auto add :
+//   if(addEventTo.value.length == 2) {
+//     addEventTo.value += ":";
+//   }
+//   // dont let user enter more than 5 charecters
+//   if(addEventTo.value.length > 5) {
+//     addEventTo.value = addEventTo.value.slice(0, 5);
+//   }
+// });
+
+// function to add listner on days after rendered
+
+function addListner () {
+  const days = document.querySelectorAll(".day");
+  days.forEach((day) => {
+    day.addEventListener("click", (e) => {
+      // set current day as active day
+      activeDay = Number(e.target.innerHTML);
+
+      // call active daay after click
+      getActiveDay(e.target.innerHTML);
+      updateEvents(Number(e.target.innerHTML) );
+
+      // removbe active from already active day
+      days.forEach((day) => {
+          day.classList.remove("active");
+      });
+
+      // if  prev month day clicked goto prev month adn add active
+      if(e.target.classList.contains("prev-date")) {
+        prevMonth();
+        setTimeout(() => {
+          // select all days of that month
+          const days = document.querySelector(".day");
+
+          // after going to prev month add active to clicked 
+          days.forEach((day) => {
+            if(!day.classList.contains("prev-date") && day.innerHTML == e.target.innerHTML) {
+              day.classList.add("activate");
+            }
+          })
+        }, 100);
+        // same with next month days
+      } else if(e.target.classList.contains("next-date")) {
+        nextMonth();
+        setTimeout(() => {
+          // select all days of that month
+          const days = document.querySelector(".day");
+
+          // after going to prev month add active to clicked 
+          days.forEach((day) => {
+            if(!day.classList.contains("next-date") && day.innerHTML == e.target.innerHTML) {
+              day.classList.add("activate");
+            }
+          })
+        }, 100);
+      }
+      else {
+        // remaining current month days
+        e.target.classList.add("active")
+      }
+    })
+  });
+}
+
+
+
+// lets show active day events and date at top
+
+  
+function getActiveDay(date) {
+  const day = new Date(year, month, date);
+  const dayName = day.toString().split(" ")[0];
+  eventday.innerHTML = dayName;
+  eventDate.innerHTML = date + " " + months[month] + " " + year;
+}
+
+
+// function to show events for that day
+
+function updateEvents(date) {
+  let events = "";
+  eventsArr.forEach((event) =>  {
+    // got events of active day only
+    if (
+      date == event.day &&
+      month+1 == event.month &&
+      year == event.year
+    ) {
+      // then show event on document
+      event.events.forEach((event)  =>{
+        events += `<div class="event">
+            <div class="title">
+              <i class="fas fa-circle"></i>
+              <h3 class="event-title">${event.title}</h3>
+            </div>
+            <div class="event-time">
+              <span class="event-time">${event.time}</span>
+            </div>
+        </div>`;
+      });
+    }
+  });
+
+  // if nothing found
+  if (events == "") {
+    events = `<div class="no-event">
+    <h3>No Events</h3>
+    </div>`;
+  }
+  eventsContainer.innerHTML = events;
+  //save events where new one added
+  saveEvents();
+}
+
+// function to add events 
+addEventSubmit.addEventListener("click", ()=> {
+  const eventTitle = addEventTitle.value;
+  eventNames.push(eventTitle);
+  // const eventTimeFrom = addEventFrom.value;
+  // const eventTimeTo =  addEventTo.value;
+
+  // some validations
+  if(eventTitle == "") {
+    alert("Please fill all the fields");
+    return ;
+  }
+
+  // const timeFromArr = eventTimeFrom.split(":");
+  // const timeToArr = eventTimeTo.split(":");
+
+  // if (
+  //   timeFromArr.length !== 2 ||
+  //   timeToArr.length !== 2 ||
+  //   timeFromArr[0] > 23 ||
+  //   timeFromArr[1] > 59 ||
+  //   timeToArr[0] > 23 ||
+  //   timeToArr[1] > 59
+  // ) {
+  //   alert("Invalid Time Format");
+  //   return;
+  // }
+
+
+  // const timeFrom = converTime(eventTimeFrom);
+  // const timeTo = converTime(eventTimeTo);
+
+  const newEvent = {
+    title: eventTitle,
+>>>>>>> 6eed0dfd52b29e8a418903dd2da80ee3d1b4b514
   };
 } else {
   // old school shim for old browsers
@@ -24197,6 +24762,7 @@ MD5.prototype._digest = function () {
     this._blockOffset = 0
   }
 
+<<<<<<< HEAD
   this._block.fill(0, this._blockOffset, 56)
   this._block.writeUInt32LE(this._length[0], 56)
   this._block.writeUInt32LE(this._length[1], 60)
@@ -24426,6 +24992,26 @@ utils.encode = function encode(arr, enc) {
 };
 
 },{}],141:[function(require,module,exports){
+=======
+async function APIorder() {
+    const response = await openai.chat.completions.create ({
+        model: 'gpt-3.5-turbo',
+        messages: [
+            {
+                role: 'user',
+                content: 'Format my day into a schedual with times in a array format: ${eventNames} ',
+            },
+        ],
+        temperature: 0,
+        max_tokens: 500,
+        top_p: 1.0,
+        frequency_penalty: 0.0,
+        presence_penalty: 0.0,
+    });
+    console.log(response.choices[0].message);
+}
+},{"openai":13}],6:[function(require,module,exports){
+>>>>>>> 6eed0dfd52b29e8a418903dd2da80ee3d1b4b514
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MultipartBody = void 0;

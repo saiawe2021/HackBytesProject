@@ -418,6 +418,7 @@ addEventSubmit.addEventListener("click", ()=> {
         item.year == year
       ) {
         item.events.push(newEvent); 
+
         eventAddded = true;
       }
     })
@@ -511,9 +512,16 @@ function getEvents() {
   eventsArr.push(...JSON.parse(localStorage.getItem("events")));
 }
 
-  let content;
+const surveyAnswer = document.querySelector(".improvements");
+const submitButton = document.querySelector('.submit-button');
+if(surveyAnswer == null) {
+  localStorage.setItem('surveryanswer', null)
+}
+else {
+  localStorage.setItem('surveyanswer', "some feed back is " + surveyAnswer.value);
+}
+let content;
  async function APIorder() {
-  
       const input = `Format my day into a schedual with times as an array in JSON format with the following activities: ${eventNames} `;
       console.log(input);
      const response = await openai.chat.completions.create ({
@@ -531,8 +539,8 @@ function getEvents() {
          presence_penalty: 0.0,
      });
      
-     console.log(response.choices[0].message.content);
-     content = JSON.parse(response.choices[0].message.content)["schedule"];
+     
+     const content = JSON.parse(response.choices[0].message.content);
 
      console.log(content);
      console.log(typeof content);
@@ -555,6 +563,37 @@ function getEvents() {
     })
   }
 const testGpt = document.querySelector('#test-gpt');
-testGpt.addEventListener('click', () => {
+testGpt.addEventListener('click', () => { 
   APIorder()
 })
+
+
+// async function SurveyOrder() {
+//   const input = "Change this schedule" + content + "based on this feedback" +surveyAnswer.value ;
+//   console.log(input);
+//  const response = await openai.chat.completions.create ({
+//      model: 'gpt-3.5-turbo',
+//      messages: [
+//          {
+//              role: 'user',
+//              content: input,
+//          },
+//      ],
+//      temperature: 0,
+//      max_tokens: 500,
+//      top_p: 1.0,
+//      frequency_penalty: 0.0,
+//      presence_penalty: 0.0,
+//  });
+ 
+ 
+//  const content = JSON.parse(response.choices[0].message.content);
+
+//  console.log(content);
+//  console.log(content["schedule"]);
+//  console.log(typeof content);
+// }
+
+// submitButton.addEventListener("click", () => {
+//   SurveyOrder();
+// })

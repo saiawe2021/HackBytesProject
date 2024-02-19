@@ -540,7 +540,7 @@ let content;
      });
      
      
-     const content = JSON.parse(response.choices[0].message.content);
+     content = JSON.parse(response.choices[0].message.content)["schedule"];
 
      console.log(content);
      console.log(typeof content);

@@ -472,6 +472,9 @@
     color: var(--primary-clr);
     background-color: transparent;
   }
+  #test-gpt {
+    
+  }
   .open-survey {
     position: absolute;
     bottom:30px;

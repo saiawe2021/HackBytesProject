@@ -372,6 +372,7 @@ function updateEvents(date) {
 addEventSubmit.addEventListener("click", ()=> {
   const eventTitle = addEventTitle.value;
   eventNames.push(eventTitle);
+  console.log(eventNames);
   // const eventTimeFrom = addEventFrom.value;
   // const eventTimeTo =  addEventTo.value;
 
@@ -511,12 +512,14 @@ function getEvents() {
 
 
  async function APIorder() {
+      const input = `Format my day into a schedual with times as an array in JSON format with the following activities: ${eventNames} `;
+      console.log(input);
      const response = await openai.chat.completions.create ({
          model: 'gpt-3.5-turbo',
          messages: [
              {
                  role: 'user',
-                 content: 'Format my day into a schedual with times in a array format: ${eventNames} ',
+                 content: input,
              },
          ],
          temperature: 0,
@@ -525,7 +528,13 @@ function getEvents() {
          frequency_penalty: 0.0,
          presence_penalty: 0.0,
      });
-     console.log(response.choices[0].message);
+     
+     
+     const content = JSON.parse(response.choices[0].message.content);
+
+     console.log(content);
+     console.log(content["schedule"]);
+     console.log(typeof content);
  }
 const testGpt = document.querySelector('#test-gpt');
 testGpt.addEventListener('click', () => {

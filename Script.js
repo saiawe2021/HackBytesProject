@@ -2,7 +2,7 @@ const OpenAI = require("openai");
 require("dotenv").config();
 
 const openai = new OpenAI({
-  apiKey: "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",
+  apiKey: "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",
   dangerouslyAllowBrowser: true,
 });
 
@@ -520,7 +520,7 @@ async function APIorder() {
     INPUT = "Format my day into a schedual with times as an array in JSON format with the following activities: " + names + " with this feedback " + surveyAnswer.value +"dont duplicate items";
   }
   else{
-    INPUT = "Format my day into a schedual with times as an array in JSON format with the following activities: " + names + "";
+    INPUT = "Format my day into a schedual with times as an array in JSON format with the following activities: " + names + "dont duplicate items";
   }
   console.log("names: " + names);
   console.log(surveyAnswer.value == null);

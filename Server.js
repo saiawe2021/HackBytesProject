@@ -29,7 +29,7 @@ async function runOrganize(activityNames) {
   var input = "Format my day into a schedual with times as an array in JSON format with the following activities: " 
   + activityNames + " dont duplicate items. User Fitnesss Level = " + userInformation.FitnessLevel 
   + ". EnjoyedActivities = " + userInformation.EnjoyedActivities + ". DislikedActivities "
-   + userInformation.DislikedActivities + ". Age: " + userInformation;
+   + userInformation.DislikedActivities + ". Age: " + userInformation.Age + " Some feedback about your scheduling: " + userInformation.Feedback;
   const completion = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
@@ -45,6 +45,7 @@ async function runOrganize(activityNames) {
     presence_penalty: 0.0,
   });
   surveryresponse = response.choices[0].message.content["schedule"];
+  
   console.log(surveryresponse);
   return surveryresponse;
 }
@@ -142,6 +143,7 @@ app.post("/post/survey", (req, res) => {
 */
 app.post("/post/feedback", (req, res) => {
   userInformation.Feedback = req.body.Feedback;
+  console.log(userInformation)
 });
 
 /*

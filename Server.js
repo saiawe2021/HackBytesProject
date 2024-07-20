@@ -26,12 +26,12 @@ var userInformation = {
 
 async function runOrganize(activityNames) {
   // For text-and-image input (multimodal), use the gemini-pro-vision model
+  var input = "Format my day into a schedual with times as an array in JSON format with the following activities: " 
+  + activityNames + " dont duplicate items. User Fitnesss Level = " + userInformation.FitnessLevel 
+  + ". EnjoyedActivities = " + userInformation.EnjoyedActivities + ". DislikedActivities "
+   + userInformation.DislikedActivities + ". Age: " + userInformation;
   const completion = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
-    input = "Format my day into a schedual with times as an array in JSON format with the following activities: " 
-      + activityNames + " dont duplicate items. User Fitnesss Level = " + userInformation.FitnessLevel 
-      + ". EnjoyedActivities = " + userInformation.EnjoyedActivities + ". DislikedActivities "
-       + userInformation.DislikedActivities + ". Age: " + userInformation.;
     messages: [
       {
         role: "user",
@@ -48,6 +48,8 @@ async function runOrganize(activityNames) {
   console.log(surveryresponse);
   return surveryresponse;
 }
+
+
 /*
 async function Promptrun() {
   // For text-and-image input (multimodal), use the gemini-pro-vision model
@@ -85,8 +87,12 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'Static', 'LandingPage.html'));
 });
 
-app.get("/index", (req, res) => {
-  res.sendFile(path.join(__dirname, 'Static', 'LandingPage.html'));
+app.get("/calendar", (req, res) => {
+  res.sendFile(path.join(__dirname, 'Static', 'Calendar.html'));
+});
+
+app.get("/survey", (req, res) => {
+  res.sendFile(path.join(__dirname, 'Static', 'SignUp.html'));
 });
 /*
 app.get('/AI', (req, res) => {

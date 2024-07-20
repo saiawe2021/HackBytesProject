@@ -143,7 +143,7 @@ app.post("/post/survey", (req, res) => {
 */
 app.post("/post/feedback", (req, res) => {
   userInformation.Feedback = req.body.Feedback;
-  console.log(userInformation)
+  console.log(userInformation);
 });
 
 /*

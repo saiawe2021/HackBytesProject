@@ -556,6 +556,24 @@ testGpt.addEventListener("click", () => {
 
 surveySubmit.addEventListener("click", ()=> {
   surveyContainer.classList.remove("active");
+});
+
+feedbackSubmit = document.getElementById('Feedback-submit');
+feedbackAnswer = document.getElementById('FeedbackAnswer');
+feedbackSubmit.addEventListener("click", ()=> {
+  var Feedback = {
+    "Feedback": feedbackAnswer.value,
+  }
+  FeedbackContainer.classList.remove("active");
+  fetch("/post/feedback", {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(Feedback)
 })
+})
+
+
 
 

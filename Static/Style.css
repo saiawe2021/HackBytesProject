@@ -526,6 +526,19 @@
     padding: 5px 10px;
     border: 1px solid var(--primary-clr);
   }
+.Feedback-submit {
+  height:40px;
+  font-size:1rem;
+  font-weight: 500;
+  outline: none;
+  border: none;
+  color: #fff;
+  background-color: var(--primary-clr);
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid var(--primary-clr);
+}
   .add-event-btn{
     height:40px;
     font-size:1rem;

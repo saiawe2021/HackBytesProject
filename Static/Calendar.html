@@ -58,12 +58,26 @@
         <div class="events"></div>
         <div class="survey-wrapper">
           <div class="survey-header">
+            <div class="title">How do you feel today</div>
+            <i class="fas fa-times close"></i>
+          </div>
+          <div class="add-event-body">
+            <div class="add-event-input">
+              <input type="text" placeholder="Your Answer" id = "Feedback"/>
+            </div>
+            <div class="add-event-footer">
+              <button class="survey-submit">submit</button>
+            </div>
+          </div>
+        </div>
+        <div class="Feedback-Wrapper">
+          <div class="survey-header">
             <div class="title">Today's Survey</div>
             <i class="fas fa-times close"></i>
           </div>
           <div class="add-event-body">
             <div class="add-event-input">
-              <input type="text" placeholder="Your feedback" class = "survey-input"/>
+              <input type="text" placeholder="Your Feedback" id = "Feedback"/>
             </div>
             <div class="add-event-footer">
               <button class="survey-submit">submit</button>
@@ -102,11 +116,11 @@
         </div>
       </div>
       <button id="test-gpt">AI Organize</button>
-      <button class="open-survey"> Survey</button>
+      <button class = "open-survey">Feedback</button>
       <button class="add-event">
         <i class="fas fa-plus"></i>
       </button>
     </div>
-    <script src="bundle.js"></script>
+    <script src="Script.js"></script>
   </body>
 </html>

@@ -1,10 +1,3 @@
-const OpenAI = require("openai");
-require("dotenv").config();
-
-const openai = new OpenAI({
-  apiKey: "sk-proj-xHOQgq2cciPMvX7Q5WnxT3BlbkFJVSwuM1ixpNrMnfUXq3gM",
-  dangerouslyAllowBrowser: true,
-});
 
 const calendar = document.querySelector(".calendar"),
   date = document.querySelector(".date"),
@@ -216,12 +209,12 @@ document.addEventListener("click", (e) => {
 });
 
 //open and close survey
-const surveyBtn = document.querySelector(".open-survey"),
-  surveyContainer = document.querySelector(".survey-wrapper");
+const feedbackBtn = document.querySelector(".open-survey"),
+  FeedbackContainer = document.querySelector(".Feedback-Wrapper");
 
-surveyBtn.addEventListener("click", () => {
-  surveyContainer.classList.toggle("active");
-});
+feedbackBtn.addEventListener("click", ()=> {
+  FeedbackContainer.classList.toggle("active");
+})
 
 
 
@@ -502,51 +495,6 @@ function getEvents() {
 
 const surveyAnswer = document.querySelector(".survey-input");
 const surveySubmit = document.querySelector(".survey-submit");
-if (!surveyAnswer.value) {
-  localStorage.setItem("surveryanswer", "");
-} else {
-  localStorage.setItem(
-    "surveyanswer",
-    "some feed back is " + surveyAnswer.value
-  );
-}
-
-
-let surveryresponse;
-async function APIorder() {
-  const names = getNames();
-  let INPUT;
-  if(surveyAnswer.value) {
-    INPUT = "Format my day into a schedual with times as an array in JSON format with the following activities: " + names + " with this feedback " + surveyAnswer.value +"dont duplicate items";
-  }
-  else{
-    INPUT = "Format my day into a schedual with times as an array in JSON format with the following activities: " + names + "dont duplicate items";
-  }
-  console.log("names: " + names);
-  console.log(surveyAnswer.value == null);
-  const input = INPUT;
-  console.log(input);
-  const response = await openai.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    messages: [
-      {
-        role: "user",
-        content: input,
-      },
-    ],
-    temperature: 0,
-    max_tokens: 500,
-    top_p: 1.0,
-    frequency_penalty: 0.0,
-    presence_penalty: 0.0,
-  });
-
-  surveryresponse = JSON.parse(response.choices[0].message.content)["schedule"];
-
-  console.log(surveryresponse);
-  console.log(typeof surveryresponse);
-  gptSchedule(surveryresponse);
-}
 function getNames() {
   let rval;
   eventsArr.forEach((obj) => {
@@ -575,8 +523,9 @@ function gptSchedule(content) {
   });
 }
 const testGpt = document.querySelector("#test-gpt");
+surveyContainer = document.querySelector(".survey-wrapper");
 testGpt.addEventListener("click", () => {
-  APIorder();
+  surveyContainer.classList.toggle("active");
 });
 
 // async function SurveyOrder() {
@@ -607,7 +556,6 @@ testGpt.addEventListener("click", () => {
 
 surveySubmit.addEventListener("click", ()=> {
   surveyContainer.classList.remove("active");
-  APIorder()
 })
 
 

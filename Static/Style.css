@@ -399,6 +399,23 @@
   .survey-wrapper.active {
     max-height: 300px;
   }
+
+  .Feedback-Wrapper {
+    position:absolute;
+    bottom: 100px;
+    left: 50%;
+    width: 90%;
+    max-height: 0;
+    overflow:hidden;
+    border-radius: 5px;
+    background-color: #fff;
+    transform: translateX(-50%);
+    transition: max-height 0.3s ease;
+  }
+
+  .Feedback-Wrapper.active {
+    max-height: 300px;
+  }
   .survey-header {
     width: 100%;
     height: 50px;
@@ -530,7 +547,7 @@
   #test-gpt {
     position: absolute;
     bottom:30px;
-    right:155px;
+    right: 180px;
     padding: 10px;
     height: 40px;
     display: flex;
@@ -548,7 +565,7 @@
     position: absolute;
     bottom:30px;
     right:80px;
-    width:60px;
+    width:80px;
     height: 40px;
     display: flex;
     align-items: center;

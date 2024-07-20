@@ -18,7 +18,7 @@ var userInformation = {
   Height:"",
   Weight:"",
   Feedback:"",
-  FeelingToday:"",
+  Feeling:"",
   Age:"",
 }
 
@@ -44,7 +44,7 @@ async function runOrganize(activityNames) {
     frequency_penalty: 0.0,
     presence_penalty: 0.0,
   });
-  surveryresponse = JSON.parse(response.choices[0].message.content)["schedule"];
+  surveryresponse = response.choices[0].message.content["schedule"];
   console.log(surveryresponse);
   return surveryresponse;
 }
@@ -147,11 +147,17 @@ app.post("/post/feedback", (req, res) => {
 /*
   data format
   body: {Feeling: $feeling
-        Events: $Comma sepreated list of the events}
+        Events: $Comma sepreated string that is a list of the events}
 */
 app.post("/post/organize", (req, res) => {
-  res.json();
-  return res;
+  userInformation.Feeling = req.body.Feeling;
+  const secondFunction = async () => {  
+    const result = await runOrganize(userInformation.body.Events);
+    res.json(result);
+    res.send();
+    return result;
+  } 
+  secondFunction();
 });
 /*
 //post request

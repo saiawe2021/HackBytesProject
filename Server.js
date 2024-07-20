@@ -137,6 +137,23 @@ app.post("/post/survey", (req, res) => {
   console.log(userInformation);
 });
 /*
+  data format
+  body: {Feedback : $data}
+*/
+app.post("/post/feedback", (req, res) => {
+  userInformation.Feedback = req.body.Feedback;
+});
+
+/*
+  data format
+  body: {Feeling: $feeling
+        Events: $Comma sepreated list of the events}
+*/
+app.post("/post/organize", (req, res) => {
+  res.json();
+  return res;
+});
+/*
 //post request
 app.post("/upload", jsonParser, (req, res) => {
   const imageData = req.body.imageData;

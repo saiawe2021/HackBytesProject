@@ -2,7 +2,7 @@ const OpenAI = require("openai");
 require("dotenv").config();
 
 const openai = new OpenAI({
-  apiKey: "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",
+  apiKey: "sk-proj-gqH92VqxxW3P06ah1qu6T3BlbkFJWVnEwbkQMHP668h3lhSj",
   dangerouslyAllowBrowser: true,
 });
 

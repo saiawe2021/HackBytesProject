@@ -83,11 +83,11 @@ app.use('/AI', (req, res, next) => {  // req: Request, Res: Result, next: to go 
 */
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'Static', 'LandingPage.html'));
-})
+});
 
 app.get("/index", (req, res) => {
   res.sendFile(path.join(__dirname, 'Static', 'LandingPage.html'));
-})
+});
 /*
 app.get('/AI', (req, res) => {
   res.send();

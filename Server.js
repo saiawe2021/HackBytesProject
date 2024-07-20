@@ -12,14 +12,14 @@ const openai = new OpenAI({
 const fs = require("fs");
 const { homedir } = require('os'); 
 var userInformation = {
-  "FitnessLevel":"",
-  "EnjoyedActivities":"",
-  "DislikedActivities":"",
-  "Height":"",
-  "Weight":"",
-  "Feedback":"",
-  "FeelingToday":"",
-  "Age":"",
+  FitnessLevel:"",
+  EnjoyedActivities:"",
+  DislikedActivities:"",
+  Height:"",
+  Weight:"",
+  Feedback:"",
+  FeelingToday:"",
+  Age:"",
 }
 
 
@@ -123,14 +123,18 @@ app.get('/wait', (req, res) => {
   res.sendFile(path.join(__dirname, 'Static', 'WaitingSinglePlayer.html'));
 });
 */
-app.post("/post/survey", jsonParser, (req, res) => {
-  userInformation.FitnessLevel = req.FitnessLevel;
-  userInformation.DislikedActivities = req.DislikedActivities;
-  userInformation.Height = req.Height;
-  userInformation.Weight = req.Weight;
-  userInformation.Age = req.Age;
-  console.log(userInformation);
 
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
+app.post("/post/survey", (req, res) => {
+  console.log(req);
+  userInformation.FitnessLevel = req.body.FitnessLevel;
+  userInformation.EnjoyedActivities = req.body.EnjoyedActivities;
+  userInformation.DislikedActivities = req.body.DislikedActivities;
+  userInformation.Height = req.body.Height;
+  userInformation.Weight = req.body.Weight;
+  userInformation.Age = req.body.Age;
+  console.log(userInformation);
 });
 /*
 //post request

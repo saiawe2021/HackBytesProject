@@ -508,6 +508,7 @@ function getNames() {
   return rval;
 }
 function gptSchedule(content) {
+  console.log(content);
   eventsArr.forEach((obj) => {
     if (obj.day == activeDay && obj.month == month + 1 && obj.year == year) {
       obj.events = [];
@@ -578,10 +579,12 @@ testGpt.addEventListener("click", () => {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify(organizeData)
-})
+}).then(response => response.json())
 .then(result=> {
   console.log(result);
-  gptSchedule(result);
+  console.log(result);
+  console.log(JSON.parse(result)["schedule"])
+  gptSchedule(JSON.parse(result)["schedule"]);
 })
 });
 

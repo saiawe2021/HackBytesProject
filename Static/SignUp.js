@@ -15,7 +15,7 @@ submitBtn.addEventListener("click", () => {
         "Weight": Weight.value,
         "Age": Age.value
     };
-
+    console.log("LOL");
     fetch("/post/survey", {
         method: 'POST',
         headers: {

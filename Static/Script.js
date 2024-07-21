@@ -569,8 +569,7 @@ surveySubmit.addEventListener("click", ()=> {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify(organizeData)
-}).then(response => responce.JSON())
-.then(result=> {
+}).then(result=> {
   console.log(result);
   gptSchedule(result);
 })

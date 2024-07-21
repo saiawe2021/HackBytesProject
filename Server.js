@@ -28,8 +28,9 @@ async function runOrganize(activityNames) {
   // For text-and-image input (multimodal), use the gemini-pro-vision model
   var input = "Format my day into a schedual with times as an array in JSON format with the following activities and add physical tasks for me based on my enjoyed activities that i enjoy: " 
     + activityNames + " dont duplicate items. User Fitnesss Level = " + userInformation.FitnessLevel 
-    + ". EnjoyedActivities = " + userInformation.EnjoyedActivities + ". DislikedActivities "
-     + userInformation.DislikedActivities + ". Age: " + userInformation.Age + " Some feedback about your scheduling: " + userInformation.Feedback +"Only include the schedule";
+    + ". With these Enjoyed Activities = " + userInformation.EnjoyedActivities + ". You dont have to include all of them each day and dont include these Disliked Activities "
+     + userInformation.DislikedActivities + ". Make the wourkout plans reasonable Given their Age: " + userInformation.Age + " Their Height: " + userInformation.Height + "And their weight" + userInformation.Weight + " and here is Some feedback about your scheduling witch overides anything else: " + userInformation.Feedback +"Only include the schedule";
+  console.log(input);
   const completion = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
     messages: [
@@ -103,7 +104,6 @@ app.post("/post/survey", (req, res) => {
   userInformation.Height = req.body.Height;
   userInformation.Weight = req.body.Weight;
   userInformation.Age = req.body.Age;
-  console.log(userInformation);
 });
 /*
   data format
@@ -112,6 +112,17 @@ app.post("/post/survey", (req, res) => {
 app.post("/post/feedback", (req, res) => {
   userInformation.Feedback = req.body.Feedback;
   console.log(userInformation);
+  const secondFunction = async () => {  
+    const result = await runOrganize(req.body.Events);
+    res.json(result);
+    res.send();
+    return result;
+  } 
+  secondFunction();
+});
+
+app.post("/post/feedbackonly", (req, res) => {
+  userInformation.Feedback = req.body.Feedback;
 });
 
 /*
@@ -121,8 +132,6 @@ app.post("/post/feedback", (req, res) => {
 */
 app.post("/post/organize", (req, res) => {
   userInformation.Feeling = req.body.Feeling;
-  console.log(req.body.Feeling);
-  console.log(req.body.Events);
   const secondFunction = async () => {  
     const result = await runOrganize(req.body.Events);
     res.json(result);
@@ -131,6 +140,7 @@ app.post("/post/organize", (req, res) => {
   } 
   secondFunction();
 });
+
 /*
 //post request
 app.post("/upload", jsonParser, (req, res) => {

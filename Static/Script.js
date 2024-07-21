@@ -502,16 +502,25 @@ function getNames() {
       console.log("obj: " + obj);
       console.log(obj.events);
       rval = obj.events.map((event) => event.title);
+      if(obj.events.map((event) => event.time) != "Undecided") {
+        console.log("Yo bois");
+        rval += obj.events.map((event) => event.time);
+      }
       console.log("rval:" + rval);
     }
   });
   return rval;
 }
+
+feedbackSubmit = document.getElementById('Feedback-submit');
+feedbackAnswer = document.getElementById('FeedbackAnswer');
 function gptSchedule(content) {
+  var Flag = false;
   console.log(content);
   eventsArr.forEach((obj) => {
     if (obj.day == activeDay && obj.month == month + 1 && obj.year == year) {
       obj.events = [];
+      Flag = true;
       content.forEach((activity) => {
         const newEvent = {
           title: activity.activity,
@@ -522,6 +531,40 @@ function gptSchedule(content) {
       updateEvents(obj.day);
     }
   });
+  if(!Flag) {
+    eventsArr.push({
+      day: activeDay,
+      month: month + 1,
+      year: year,
+      events: [],
+    });
+    eventsArr.forEach((obj) => {
+      if (obj.day == activeDay && obj.month == month + 1 && obj.year == year) {
+        obj.events = [];
+        Flag = true;
+        content.forEach((activity) => {
+          const newEvent = {
+            title: activity.activity,
+            time: activity.time,
+          };
+          obj.events.push(newEvent);
+        });
+        updateEvents(obj.day);
+      }
+      var Feedback = {
+        "Feedback": "",
+      }
+      FeedbackContainer.classList.remove("active");
+      fetch("/post/feedbackonly", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(Feedback)
+    })
+    });
+    feedbackAnswer.value= "";
+  }
 }
 
 // async function SurveyOrder() {
@@ -549,12 +592,10 @@ function gptSchedule(content) {
 //  console.log(typeof content);
 //  gptSchedule(content);
 // }
-
-feedbackSubmit = document.getElementById('Feedback-submit');
-feedbackAnswer = document.getElementById('FeedbackAnswer');
 feedbackSubmit.addEventListener("click", ()=> {
   var Feedback = {
     "Feedback": feedbackAnswer.value,
+    "Events": getNames(),
   }
   FeedbackContainer.classList.remove("active");
   fetch("/post/feedback", {
@@ -563,8 +604,13 @@ feedbackSubmit.addEventListener("click", ()=> {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify(Feedback)
+}).then(response => response.json())
+.then(result=> {
+  console.log(result);
+  console.log(result);
+  gptSchedule(JSON.parse(result)["schedule"]);
 })
-})
+});
 
 const testGpt = document.querySelector("#test-gpt");
 surveyContainer = document.querySelector(".survey-wrapper");
@@ -583,7 +629,6 @@ testGpt.addEventListener("click", () => {
 .then(result=> {
   console.log(result);
   console.log(result);
-  console.log(JSON.parse(result)["schedule"])
   gptSchedule(JSON.parse(result)["schedule"]);
 })
 });

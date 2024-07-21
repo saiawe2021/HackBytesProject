@@ -19,14 +19,14 @@ var userInformation = {
   Weight:"160",
   Feedback:"",
   Feeling:"I am feeling good",
-  Age:"35",
+  Age:"76",
 }
 async function runOrganize(activityNames) {
     // For text-and-image input (multimodal), use the gemini-pro-vision model
     var input = "Format my day into a schedual with times as an array in JSON format with the following activities and add physical tasks for me based on my enjoyed activities that i enjoy: " 
     + activityNames + " dont duplicate items. User Fitnesss Level = " + userInformation.FitnessLevel 
-    + ". EnjoyedActivities = " + userInformation.EnjoyedActivities + ". DislikedActivities "
-     + userInformation.DislikedActivities + ". Age: " + userInformation.Age + " Some feedback about your scheduling: " + userInformation.Feedback +"Only include the schedule";
+    + ". With these Enjoyed Activities = " + userInformation.EnjoyedActivities + ". You dont have to include all of them each day and dont include these Disliked Activities "
+     + userInformation.DislikedActivities + ". Make the wourkout plans reasonable Given their Age: " + userInformation.Age + " Their Height: " + userInformation.Height + "And their weight" + userInformation.Weight + " and here is Some feedback about your scheduling: " + userInformation.Feedback +"Only include the schedule";
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
@@ -46,4 +46,4 @@ async function runOrganize(activityNames) {
     return surveryresponse;
   }
 
-  runOrganize("School, Drive car, Play video games");
+  runOrganize("Go to tech class, Go shopping, Go to sons house");

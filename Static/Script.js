@@ -522,11 +522,6 @@ function gptSchedule(content) {
     }
   });
 }
-const testGpt = document.querySelector("#test-gpt");
-surveyContainer = document.querySelector(".survey-wrapper");
-testGpt.addEventListener("click", () => {
-  surveyContainer.classList.toggle("active");
-});
 
 // async function SurveyOrder() {
 //   const input = "Change this schedule " + surveryresponse + " based on this feedback " +surveyAnswer.value + " in JSON format" ;
@@ -554,27 +549,6 @@ testGpt.addEventListener("click", () => {
 //  gptSchedule(content);
 // }
 
-
-SurveyAnswer = document.getElementById('SurveyAnswer')
-surveySubmit.addEventListener("click", ()=> {
-  surveyContainer.classList.remove("active");
-  console.log(getNames());
-  var organizeData = {
-    "Feeling": SurveyAnswer.value,
-    "Events": getNames(),
-  }
-  fetch("/post/organize", {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(organizeData)
-}).then(result=> {
-  console.log(result);
-  gptSchedule(result);
-})
-});
-
 feedbackSubmit = document.getElementById('Feedback-submit');
 feedbackAnswer = document.getElementById('FeedbackAnswer');
 feedbackSubmit.addEventListener("click", ()=> {
@@ -591,6 +565,25 @@ feedbackSubmit.addEventListener("click", ()=> {
 })
 })
 
+const testGpt = document.querySelector("#test-gpt");
+surveyContainer = document.querySelector(".survey-wrapper");
+testGpt.addEventListener("click", () => {
+  console.log(getNames());
+  var organizeData = {
+    "Events": getNames(),
+  }
+  fetch("/post/organize", {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(organizeData)
+})
+.then(result=> {
+  console.log(result);
+  gptSchedule(result);
+})
+});
 
 
 

@@ -44,9 +44,9 @@ async function runOrganize(activityNames) {
     frequency_penalty: 0.0,
     presence_penalty: 0.0,
   });
-  surveyresponse = completion.choices[0].message.content;
-  console.log(surveyresponse);
-  return surveyresponse;
+  surveryresponse = completion.choices[0].message.content;
+  console.log(surveryresponse);
+  return surveryresponse;
 }
 
 
@@ -126,6 +126,7 @@ app.post("/post/organize", (req, res) => {
   const secondFunction = async () => {  
     const result = await runOrganize(req.body.Events);
     res.json(result);
+    res.send();
     return result;
   } 
   secondFunction();

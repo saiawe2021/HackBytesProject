@@ -26,7 +26,7 @@ var userInformation = {
 
 async function runOrganize(activityNames) {
   // For text-and-image input (multimodal), use the gemini-pro-vision model
-  var input = "Format my day into a schedual with times as an array in JSON format with the following activities: " 
+  var input = "Format my day into a schedual with times as an array in JSON format with the following activities and add physical tasks for me based on my enjoyed activities that i enjoy: " 
   + activityNames + " dont duplicate items. User Fitnesss Level = " + userInformation.FitnessLevel 
   + ". EnjoyedActivities = " + userInformation.EnjoyedActivities + ". DislikedActivities "
    + userInformation.DislikedActivities + ". Age: " + userInformation.Age + " Some feedback about your scheduling: " + userInformation.Feedback;
@@ -44,46 +44,15 @@ async function runOrganize(activityNames) {
     frequency_penalty: 0.0,
     presence_penalty: 0.0,
   });
-  surveryresponse = response.choices[0].message.content["schedule"];
-  
+  surveryresponse = completion.choices[0].message.content;
   console.log(surveryresponse);
   return surveryresponse;
 }
 
 
-/*
-async function Promptrun() {
-  // For text-and-image input (multimodal), use the gemini-pro-vision model
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-
-  const prompt = "Write A story from this image and the given prompt" ;
-
-  const imageParts = [
-    fileToGenerativePart("./sketch.png", "image/png"),
-  ];
-  
-
-  const result = await model.generateContent([prompt, ...imageParts]);
-  const response = await result.response;
-  const text = response.text();
-  console.log(text);
-  return text;
-}
-*/
 
 app.use(express.static(path.join(__dirname, 'Static')));
-/*
-app.use('/AI', (req, res, next) => {  // req: Request, Res: Result, next: to go to the next Middle ware 
-  const secondFunction = async () => { // The Secondfunction is a wrapper functions what is a async function to is returns a promice, and it waits for the run fuction because the AI is not instant, and then sends it to the server. 
-    const result = await run();
-    
-    res.send(result);
-    next();
-  }
-  secondFunction();
-});
-*/
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'Static', 'LandingPage.html'));
 });
@@ -128,7 +97,6 @@ app.get('/wait', (req, res) => {
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.post("/post/survey", (req, res) => {
-  console.log(req);
   userInformation.FitnessLevel = req.body.FitnessLevel;
   userInformation.EnjoyedActivities = req.body.EnjoyedActivities;
   userInformation.DislikedActivities = req.body.DislikedActivities;
@@ -153,8 +121,10 @@ app.post("/post/feedback", (req, res) => {
 */
 app.post("/post/organize", (req, res) => {
   userInformation.Feeling = req.body.Feeling;
+  console.log(req.body.Feeling);
+  console.log(req.body.Events);
   const secondFunction = async () => {  
-    const result = await runOrganize(userInformation.body.Events);
+    const result = await runOrganize(req.body.Events);
     res.json(result);
     res.send();
     return result;
